@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>@yield('title') | MCM EyeCafe </title>
+        <title>@yield('title') | Alexian Brothers Health and Wellness Center, Inc. </title>
         @include('admin.themes.partials.head')
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">
