@@ -19,7 +19,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12 col-lg-10">
                         <div class="wrap d-md-flex">
-                            <div class="img" style="background-image: url({{ asset('images/accounts/banner/sidebanner.png') }}); width: 480px; height: 515px;">
+                            <div class="img" style="background-image: url({{ asset('images/accounts/banner/sidebanner.png') }}); width: 550px; height: 515px;">
                             </div>
                             <div class="login-wrap p-4 p-md-4">
                                 <div class="d-flex justify-content-center">
@@ -32,13 +32,13 @@
                                 @if(session('errorMessage'))
                                     <p style="color:red;"><small>{{ session('errorMessage') }}</small></p>
                                 @endif
-                               
+
                                 <form method="POST" action="{{ action('App\Http\Controllers\LoginController@validateUser') }}">
                                 {{ csrf_field() }}
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="email">E-Mail</label>
-                                            <input class="form-control" type="email" name="email" />
+                                            <label for="username">Username</label>
+                                            <input class="form-control" type="text" name="username" />
                                         </div>
                                         <div class="col-md-12 password">Password</label>
                                             <input class="form-control" type="password" name="password" />

@@ -3,20 +3,20 @@
     function getTransactionNumber()
     {
         $latest_txn_number = DB::table('transactions')
-            ->select('txn_number')
-            ->orderBy('txn_id', 'desc')
+            ->select('number')
+            ->orderBy('id', 'desc')
             ->first();
 
         if (!$latest_txn_number) {
             // $characters = '0123456789';
             // $txn_number = '';
-    
+
             // for ($i = 0; $i < 12; $i++) {
             //     $txn_number .= $characters[mt_rand(0, strlen($characters) - 1)];
             // }
             $txn_number = '000001';
         } else {
-            $lastNumber = intval($latest_txn_number->txn_number);
+            $lastNumber = intval($latest_txn_number->number);
             $txn_number = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
         }
 
@@ -137,18 +137,18 @@
     //     }
     // }
 
-    function sendEmail($emailSubject,$emailContent,$emailTo)
-    {
-        session()->put('emailTo', $emailTo);
-        session()->put('emailSubject', $emailSubject);
+    // function sendEmail($emailSubject,$emailContent,$emailTo)
+    // {
+    //     session()->put('emailTo', $emailTo);
+    //     session()->put('emailSubject', $emailSubject);
 
-        Mail::raw($emailContent, function($message) {
-            $message
-                ->to(session()->get('emailTo'), 'Infinit SMS User')
-                ->subject(session()->get('emailSubject'));
-            $message->from('mailer@infinitsms.com','Infinit SMS');
-        });
-    }
+    //     Mail::raw($emailContent, function($message) {
+    //         $message
+    //             ->to(session()->get('emailTo'), 'Infinit SMS User')
+    //             ->subject(session()->get('emailSubject'));
+    //         $message->from('mailer@infinitsms.com','Infinit SMS');
+    //     });
+    // }
 
     function generateuuid()
     {
@@ -186,29 +186,26 @@
 
     function setUserSessionVariables($user)
     {
-        Session::put('usr_id', $user->usr_id);
-        Session::put('usr_uuid', $user->usr_uuid);
-        Session::put('usr_last_name', $user->usr_last_name);
-        Session::put('usr_first_name', $user->usr_first_name);
-        Session::put('usr_middle_name', $user->usr_middle_name);
-        Session::put('usr_email', $user->usr_email);
-        Session::put('usr_birth_date', $user->usr_birth_date);
-        Session::put('usr_image_path', $user->usr_image_path);
-        Session::put('usr_mobile', $user->usr_mobile);
-        Session::put('usr_type', $user->usr_type);
-        Session::put('usr_full_name', $user->usr_first_name . ' ' . $user->usr_middle_name . ' ' . $user->usr_last_name);
-        recordLogin($user->usr_id);
+        session()->put('id', $user->id);
+        // Session::put('usr_uuid', $user->usr_uuid);
+       session()->put('last_name', $user->last_name);
+       session()->put('first_name', $user->first_name);
+       session()->put('middle_name', $user->middle_name);
+       session()->put('username', $user->username);
+       session()->put('password', $user->password);
+        // Session::put('usr_full_name', $user->usr_first_name . ' ' . $user->usr_middle_name . ' ' . $user->usr_last_name);
+        // recordLogin($user->id);
     }
 
-    function getUserName($usr_id)
+    function getUserName($id)
     {
         $user = DB::table('users')
-        ->where('usr_id','=',$usr_id)
+        ->where('id','=',$id)
         ->first();
 
         if($user){
-            $last_name = $user->usr_last_name;
-            $first_name = $user->usr_first_name;
+            $last_name = $user->last_name;
+            $first_name = $user->first_name;
             $display_name = $first_name .' ' . $last_name;
             return $display_name;
         }else{
@@ -216,37 +213,37 @@
         }
     }
 
-    function incrementUserLoginCounter($usr_email)
-    {
-        DB::table('users')
-        ->where('usr_email','=',$usr_email)
-        ->increment('usr_invalid_login_count', 1);
-    }
+    // function incrementUserLoginCounter($username)
+    // {
+    //     DB::table('users')
+    //     ->where('username','=',$username)
+    //     ->increment('usr_invalid_login_count', 1);
+    // }
 
-    function resetUserLoginCounter($usr_email)
-    {
-        DB::table('users')
-        ->where('usr_email','=',$usr_email)
-        ->update([
-            'usr_invalid_login_count' => '0'
-        ]);
-    }
+    // function resetUserLoginCounter($username)
+    // {
+    //     DB::table('users')
+    //     ->where('username','=',$username)
+    //     ->update([
+    //         'usr_invalid_login_count' => '0'
+    //     ]);
+    // }
 
-    function recordLogin($usr_id)
-    {
-        DB::table('logins')
-        ->insert([
-            'usr_id' => $usr_id,
-            'log_date' => \Carbon\Carbon::now(),
-            'log_ip' => \Request::ip(),
-        ]);
-    }
+    // function recordLogin($log_id)
+    // {
+    //     DB::table('logins')
+    //     ->insert([
+    //         'log_id' => $log_id,
+    //         // 'log_date' => \Carbon\Carbon::now(),
+    //         // 'log_ip' => \Request::ip(),
+    //     ]);
+    // }
 
-    function getAvatar($usr_id)
+    function getAvatar($id)
     {
         try{
             $user = DB::table('users')
-            ->where('usr_id','=',$usr_id)
+            ->where('id','=',$id)
             ->first();
 
             if($user->usr_image_path <> ''){
@@ -259,10 +256,10 @@
         }
     }
 
-    function getLastLogin($usr_id)
+    function getLastLogin($id)
     {
         $login = DB::table('logins')
-        ->where('usr_id','=',$usr_id)
+        ->where('id','=',$id)
         ->orderBy('log_date','desc')
         ->first();
 
@@ -385,7 +382,7 @@
     //     $date1 = new DateTime(today());
     //     $date2 = new DateTime($borrow_request->res_date_to_return);
     //     $interval = $date2->diff($date1);
-        
+
     //     if($date1 > $date2){
     //         return '<span class="badge badge-danger">' . $interval->days . ' DAY(S) OVERDUE</span>';
     //     }else{

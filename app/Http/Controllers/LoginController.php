@@ -15,22 +15,32 @@ class LoginController extends Controller
     public function validateUser(Request $request)
     {
 
-        $usr_email = $request->email;
-        $usr_password = $request->password;
+        $username = $request->username;
+        $password = $request->password;
 
         $user = DB::table('users')
-            ->where('usr_email', '=', $usr_email)
-            ->where('users.usr_password', '=', md5($usr_password))
+            ->where('username', '=', $username)
+            ->where('password', '=',($password))
             // ->where('users.usr_code', '=', ($usr_password))
-            ->where('usr_active', '=', '1')
+            ->where('active', '=', '1')
             ->first();
 
         if ($user) {
-            setUserSessionVariables($user);
-            return redirect()->action([AdminController::class, 'home']);
+            // setUserSessionVariables($user);
+        //    Session::put('usr_uuid', $user->usr_uuid);
+           session()->put('id', $user->id);
+           session()->put('last_name', $user->last_name);
+           session()->put('first_name', $user->first_name);
+           session()->put('middle_name', $user->middle_name);
+           session()->put('username', $user->username);
+           session()->put('password', $user->password);
+        //    dd($user);
+            return redirect()->action([AdminController::class, 'setup']);
+
         } else {
-            alert()->error('Invalid Credentials', 'Invalid e-mail or password');
+            alert()->error('Invalid Credentials', 'Invalid username or password');
             return redirect()->back();
+
         }
     }
 

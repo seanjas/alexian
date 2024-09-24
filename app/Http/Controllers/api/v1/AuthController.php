@@ -24,11 +24,11 @@ class AuthController extends Controller
 {
          /**
      * login
-     * 
+     *
      * @param string email
      * @param string password
      * @param string device_name
-     * 
+     *
      */
     function login(Request $request): JsonResponse
     {
@@ -51,7 +51,7 @@ class AuthController extends Controller
 
                     // Generate token
                     $token = $user->createToken($device_name)->plainTextToken;
-                    
+
                     $return_message = [
                         'user' => $user->only([
                             'usr_id', 'typ_id', 'usr_email',
@@ -80,9 +80,9 @@ class AuthController extends Controller
 
     /**
      * get_user_data
-     * 
+     *
      * @param string token
-     * 
+     *
      */
     function get_user_data(Request $request): JsonResponse
     {
@@ -112,9 +112,9 @@ class AuthController extends Controller
 
     /**
      * is_email_available
-     * 
+     *
      * @param string email
-     *  
+     *
      */
     function is_email_available(Request $request, $email): JsonResponse
     {
@@ -179,7 +179,7 @@ class AuthController extends Controller
 
     /**
      * is_confirmation_code_valid
-     * 
+     *
      * @param string confirmation_code
      */
     function is_confirmation_code_valid(Request $request): JsonResponse
@@ -210,7 +210,7 @@ class AuthController extends Controller
                     $latest_code->cc_active = 0;
                     $latest_code->save();
 
-                    // Return available if not expired 
+                    // Return available if not expired
                     $return_message = ['status' => 'Confirmed'];
                 }
             } else {
@@ -228,7 +228,7 @@ class AuthController extends Controller
 
     /**
      * register
-     * 
+     *
      * @param Object from mobile
      */
     function register(Request $request): JsonResponse
@@ -284,7 +284,7 @@ class AuthController extends Controller
 
     /**
      * send_password_reset_code
-     * 
+     *
      * @param Object from mobile
      */
     function send_password_reset_code($email): JsonResponse
@@ -332,7 +332,7 @@ class AuthController extends Controller
 
     /**
      * is_reset_password_code_valid
-     * 
+     *
      * @param String reset_password_code
      */
     function is_password_reset_code_valid(Request $request): JsonResponse
@@ -375,7 +375,7 @@ class AuthController extends Controller
 
     /**
      * create_new_password
-     * 
+     *
      * @param String password
      */
     function create_new_password(Request $request): JsonResponse
@@ -405,7 +405,7 @@ class AuthController extends Controller
 
     /**
      * logout
-     * 
+     *
      * @param Object user
      */
     function logout(Request $request): JsonResponse
@@ -419,9 +419,9 @@ class AuthController extends Controller
 
     /**
      * delete_account
-     * 
+     *
      * needed by google play store
-     * 
+     *
      * @param Object user
      */
     function delete_account(Request $request): JsonResponse

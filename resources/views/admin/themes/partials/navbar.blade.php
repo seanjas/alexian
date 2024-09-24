@@ -1,15 +1,40 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-orange navbar-light">
+<nav class="main-header navbar navbar-expand navbar-maroon navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            <a class="nav-link"  role="button"><i class="fas fa-barcode text-white"> Code</i>
+            </a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link "  role="button"><i class="fas fa-search text-white">  Name</i></a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link"  role="button"><i class="fas fa-file-alt text-white">  Reports</i></a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link"  role="button"><i class="fa-solid fa-coins text-white">  Balance</i></a>
+        </li>
+    </ul>
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link"  role="button"><i class="fas fa-exclamation-triangle text-white"> Void</i></a>
         </li>
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-    
+
         {{-- <li class="nav-item">
             <a class="btn btn-default" href="javascript:void(0)">
                 <i class="fas fa-coins" style="color:#ffb400;"></i>

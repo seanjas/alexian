@@ -12,30 +12,30 @@
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="usr_email">E-Mail *</label>
-                        <input class="form-control" type="email" name="usr_email" id="usr_email" placeholder="E-mail"
-                            value="{{ session('usr_email') }}" required />
+                        <label for="usr_email">Username *</label>
+                        <input class="form-control" type="text" name="username" id="username" placeholder="Username"
+                            value="{{ session('username') }}" required />
                     </div>
                     <div class="form-group">
-                        <label for="usr_last_name">Last Name *</label>
-                        <input class="form-control" type="text" name="usr_last_name" id="usr_last_name"
-                            placeholder="Last Name" value="{{ session('usr_last_name') }}" required />
+                        <label for="last_name">Last Name *</label>
+                        <input class="form-control" type="text" name="last_name" id="last_name"
+                            placeholder="Last Name" value="{{ session('last_name') }}" required />
                     </div>
                     <div class="form-group">
-                        <label for="usr_first_name">First Name *</label>
-                        <input class="form-control" type="text" name="usr_first_name" id="usr_first_name"
-                            placeholder="First Name" value="{{ session('usr_first_name') }}" required />
+                        <label for="first_name">First Name *</label>
+                        <input class="form-control" type="text" name="first_name" id="first_name"
+                            placeholder="First Name" value="{{ session('first_name') }}" required />
                     </div>
                     <div class="form-group">
                         <label for="usr_middle_name">Middle Name</label>
                         <input class="form-control" type="text" name="usr_middle_name" id="usr_middle_name"
                             placeholder="Middle Name" value="{{ session('usr_middle_name') }}" />
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="usr_birth_date">Birth Date *</label>
                         <input class="form-control" type="date" name="usr_birth_date" id="usr_birth_date"
                             value="{{ session('usr_birth_date') }}" required />
-                    </div>
+                    </div> --}}
                     <div class="col-12 mb-3">
                         {{-- {!! NoCaptcha::renderJs() !!} --}}
                         {{-- {!! NoCaptcha::display() !!} --}}

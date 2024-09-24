@@ -10,7 +10,7 @@
             @include('sweetalert::alert')
             {{-- @include('admin.themes.partials.preloader') --}}
             @include('admin.themes.partials.navbar')
-            @include('admin.themes.partials.sidebar')
+           
             <div class="content-wrapper">
                 @yield('content')
                 {{-- <a class="btn btn-primary back-to-top no-print" id="back-to-top" role="button" aria-label="Scroll to top" href="#">
@@ -19,7 +19,7 @@
             </div>
             {{-- @include('layouts.partials.footer') --}}
             @include('admin.themes.partials.footer')
-            @include('admin.themes.partials.controlsidebar')
+
             @include('admin.themes.partials.modals')
         </div>
         @include('admin.themes.partials.scripts')

@@ -10,61 +10,58 @@ class UserController extends Controller
 {
     public function register(Request $request)
     {
-        $usr_email = $request->usr_email;
-        $usr_mobile = $request->usr_mobile;
-        $usr_first_name = $request->usr_first_name;
-        $usr_middle_name = $request->usr_middle_name;
-        $usr_last_name = $request->usr_last_name;
+        $username = $request->username;
+        $password = $request->password;
+        $first_name = $request->first_name;
+        $middle_name = $request->middle_name;
+        $last_name = $request->last_name;
         $code = generateDigitCode();
 
         $user = DB::table('users')
-            ->where('usr_email', '=', $usr_email)
+            ->where('username', '=', $username)
             ->first();
 
         if ($user) {
-            alert()->error('Account already exists', 'A user with the same email ' . $usr_email . ' already exists.');
+            alert()->error('Account already exists', 'A user with the same username ' . $username . ' already exists.');
         } else {
             // Insert into 'users' table
-            $usr_id = DB::table('users')
+            $id = DB::table('users')
                 ->insertGetId([
-                    'usr_uuid' => generateuuid(),
-                    'usr_mobile' => $usr_mobile,
-                    'usr_email' => $usr_email,
-                    'usr_password' => md5($code),
-                    'usr_first_name' => $usr_first_name,
-                    'usr_middle_name' => $usr_middle_name,
-                    'usr_last_name' => $usr_last_name,
-                    'usr_date_created' => Carbon::now(),
-                    'usr_type' => '1',
-                    'usr_code' => $code
+                    'id' => generateuuid(),
+                    'username' => $username,
+                    'password' => $password,
+                    'first_name' => $first_name,
+                    'middle_name' => $middle_name,
+                    'last_name' => $last_name,
+
                 ]);
 
             // Construct full name
-            $usr_full_name = $usr_first_name;
-            if (!empty($usr_middle_name)) {
-                $usr_full_name .= ' ' . $usr_middle_name;
+            $full_name = $first_name;
+            if (!empty($middle_name)) {
+                $full_name .= ' ' . $middle_name;
             }
-            $usr_full_name .= ' ' . $usr_last_name;
+            $full_name .= ' ' . $last_name;
 
             // Insert into 'users_personal_information' table
-            DB::table('users_personal_information')
-                ->insert([
-                    'usr_id' => $usr_id,
-                    'usr_full_name' => $usr_full_name,
-                    'usr_sex' => null,  // As you mentioned, this is null by default
-                    'usr_address' => null,  // This is also null by default
-                    'usr_mobile' => $usr_mobile,
-                    'usr_email' => $usr_email
-                ]);
+            // DB::table('users')
+            //     ->insert([
+            //         'id' => $id,
+            //         'username' => $username,
+            //         'password' => $password,
+            //         'first_name' => $first_name,
+            //         'middle_name' => $middle_name,
+            //         'last_name' => $last_name,
+            //     ]);
 
-            // Send email to the user
-            $emailSubject = 'MCM EyeCafe Registration';
-            $emailContent = 'Welcome to MCM EyeCafe. To login, use your email address and the following temporary password ' . $code . '.';
-            $emailTo = $usr_email;
+            // // Send email to the user
+            // $emailSubject = 'MCM EyeCafe Registration';
+            // $emailContent = 'Welcome to MCM EyeCafe. To login, use your email address and the following temporary password ' . $code . '.';
+            // $emailTo = $email;
 
-            sendEmail($emailSubject, $emailContent, $emailTo);
+            // sendEmail($emailSubject, $emailContent, $emailTo);
 
-            alert()->success('User successfully registered.', 'To confirm the validity of your account, your temporary password was sent to your email address ' . $request->usr_email);
+            alert()->success('User successfully registered.', 'To confirm the validity of your account, your temporary password was sent to your email address ' . $request->email);
         }
 
         return redirect()->action([MainController::class, 'main']);
@@ -73,23 +70,23 @@ class UserController extends Controller
     // public function verify($code)
     // {
     //     $user = DB::table('users')
-    //     ->where('usr_email_activation_code', '=', $code)
+    //     ->where('email_activation_code', '=', $code)
     //     ->first();
 
     //     if($user){
-    //         if($user->usr_is_verified == '0'){
+    //         if($user->is_verified == '0'){
     //             DB::table('users')
-    //             ->where('usr_email_activation_code', '=', $code)
+    //             ->where('email_activation_code', '=', $code)
     //             ->update([
-    //                 'usr_date_verified' => Carbon::now(),
-    //                 'usr_is_verified' => '1'
+    //                 'date_verified' => Carbon::now(),
+    //                 'is_verified' => '1'
     //             ]);
 
     //             $user = DB::table('users')
-    //             ->where('usr_email_activation_code', '=', $code)
+    //             ->where('email_activation_code', '=', $code)
     //             ->first();
 
-    //             resetUserLoginCounter($user->usr_email);
+    //             resetUserLoginCounter($user->email);
     //             setUserSessionVariables($user);
     //             return redirect()->action([AdminController::class, 'welcome']);
     //         }else{
@@ -104,24 +101,24 @@ class UserController extends Controller
 
     // public function updatePassword(Request $request)
     // {
-    //     $usr_password1 = $request->usr_password1;
-    //     $usr_password2 = $request->usr_password2;
-    //     $usr_uuid = session('usr_uuid');
+    //     $password1 = $request->password1;
+    //     $password2 = $request->password2;
+    //     $uuid = session('uuid');
 
-    //     if($usr_password1 == $usr_password2){
+    //     if($password1 == $password2){
     //         DB::table('users')
-    //         ->where('usr_uuid', '=', $usr_uuid)
+    //         ->where('uuid', '=', $uuid)
     //         ->update([
-    //             'usr_password' => md5($usr_password1)
+    //             'password' => md5($password1)
     //         ]);
 
     //         alert()->info('Success','Your password was successfully changed.');
     //         return redirect()->action([AdminController::class, 'home']);
     //     }else{
     //         DB::table('users')
-    //         ->where('usr_uuid', '=', $usr_uuid)
+    //         ->where('uuid', '=', $uuid)
     //         ->update([
-    //             'usr_password' => md5($usr_password1)
+    //             'password' => md5($password1)
     //         ]);
 
     //         alert()->error('Password Not Changed','Password did not match!');
@@ -131,76 +128,76 @@ class UserController extends Controller
 
     // public function forgotPassword(Request $request)
     // {
-    //     $usr_email = $request->usr_email;
+    //     $email = $request->email;
     //     $code = generateDigitCode();
 
     //     DB::table('users')
-    //     ->where('usr_email','=',$usr_email)
+    //     ->where('email','=',$email)
     //     ->update([
-    //         'usr_password_reset_code' => $code,
-    //         'usr_password_reset_allowed' => '1'
+    //         'password_reset_code' => $code,
+    //         'password_reset_allowed' => '1'
     //     ]);
 
     //     $reset_url = env('APP_URL') . '/user/reset/' . $code;
     //     $emailSubject = 'GRIND password reset';
     //     $emailContent = 'To reset you password, please go to the following link: ' . $reset_url . '.';
-    //     $emailTo = $usr_email;
+    //     $emailTo = $email;
 
     //     sendEmail($emailSubject,$emailContent,$emailTo);
 
-    //     alert()->info('Check Your E-mail','An e-mail password reset link has been sent to ' . $usr_email . '. Please login to your e-mail to complete the password reset process.');
+    //     alert()->info('Check Your E-mail','An e-mail password reset link has been sent to ' . $email . '. Please login to your e-mail to complete the password reset process.');
     //     return redirect()->action([MainController::class, 'main']);
     // }
 
-    // public function reset($usr_uuid)
+    // public function reset($uuid)
     // {
     //     $code = generateDigitCode();
 
     //     $user = DB::table('users')
-    //     ->where('usr_uuid','=',$usr_uuid)
+    //     ->where('uuid','=',$uuid)
     //     ->first();
 
-    //     $usr_email = $user->usr_email;
+    //     $email = $user->email;
 
     //     DB::table('users')
-    //     ->where('usr_uuid', '=', $usr_uuid)
+    //     ->where('uuid', '=', $uuid)
     //     ->update([
-    //         'usr_password' => md5($code),
-    //         'usr_code' => $code
+    //         'password' => md5($code),
+    //         'code' => $code
     //     ]);
 
     //     $emailSubject = 'Infinit SMS password reset';
     //     $emailContent = 'An administrator has reset your password. Your new password is ' . $code . '.';
-    //     $emailTo = $usr_email;
+    //     $emailTo = $email;
 
     //     sendEmail($emailSubject,$emailContent,$emailTo);
 
-    //     alert()->info('Password has been reset','A new password has been generated and sent to ' . $usr_email . '.');
+    //     alert()->info('Password has been reset','A new password has been generated and sent to ' . $email . '.');
     //     return redirect()->action([UserController::class, 'active']);
     // }
 
     public function update(Request $request)
     {
-        $usr_uuid = $request->usr_uuid;
-        $usr_email = $request->usr_email;
-        $usr_first_name = $request->usr_first_name;
-        $usr_middle_name = $request->usr_middle_name;
-        $usr_last_name = $request->usr_last_name;
-        $usr_birth_date = $request->usr_birth_date;
+        $id = $request->id;
+        $username = $request->username;
+        $first_name = $request->first_name;
+        $middle_name = $request->middle_name;
+        $last_name = $request->last_name;
+        $password = $request->password;
 
         DB::table('users')
-            ->where('usr_uuid', '=', $usr_uuid)
+            ->where('id', '=', $id)
             ->update([
-                'usr_email' => $usr_email,
-                'usr_first_name' => $usr_first_name,
-                'usr_middle_name' => $usr_middle_name,
-                'usr_last_name' => $usr_last_name,
-                'usr_birth_date' => $usr_birth_date,
-                'usr_date_modified' => Carbon::now()
+                'username' => $username,
+                'first_name' => $first_name,
+                'middle_name' => $middle_name,
+                'last_name' => $last_name,
+                'password' => $password,
+                'date_modified' => Carbon::now()
             ]);
 
         $user = DB::table('users')
-            ->where('usr_uuid', '=', $usr_uuid)
+            ->where('id', '=', $id)
             ->first();
 
         setUserSessionVariables($user);
@@ -216,25 +213,25 @@ class UserController extends Controller
         $new_password2 = $request->new_password2;
 
         $user = DB::table('users')
-        ->where('usr_id', '=', session('usr_id'))
+        ->where('id', '=', session('id'))
         ->first();
 
-        if(md5($current_password) == $user->usr_password){
-            if($new_password1 == $new_password2){
+        // if(md5($current_password) == $user->password){
+        //     if($new_password1 == $new_password2){
 
-                DB::table('users')
-                ->where('usr_id','=',session('usr_id'))
-                ->update([
-                    'usr_password' => md5($new_password1)
-                ]);
+        //         DB::table('users')
+        //         ->where('id','=',session('id'))
+        //         ->update([
+        //             'password' => md5($new_password1)
+        //         ]);
 
-                alert()->success('Success','User password has been changed.');
-            }else{
-                alert()->warning('Warning','Password did not matched.');
-            }
-        }else{
-            alert()->warning('Warning','Incorrect user password.');
-        }
+        //         alert()->success('Success','User password has been changed.');
+        //     }else{
+        //         alert()->warning('Warning','Password did not matched.');
+        //     }
+        // }else{
+        //     alert()->warning('Warning','Incorrect user password.');
+        // }
         return redirect()->action([AdminController::class, 'home']);
     }
 
@@ -243,10 +240,10 @@ class UserController extends Controller
     //     $mode = 'active';
 
     //     $users = DB::table('users')
-    //     ->where('usr_active','=','1')
+    //     ->where('active','=','1')
     //     ->where('acc_id','=',session('acc_id'))
-    //     ->orderby('usr_last_name')
-    //     ->orderby('usr_first_name')
+    //     ->orderby('last_name')
+    //     ->orderby('first_name')
     //     ->get();
 
     //     return view('admin.users.current', compact('users','mode'));
@@ -257,62 +254,62 @@ class UserController extends Controller
     //     $mode = 'inactive';
 
     //     $users = DB::table('users')
-    //     ->where('usr_active','=','0')
+    //     ->where('active','=','0')
     //     ->where('acc_id','=',session('acc_id'))
-    //     ->orderby('usr_last_name')
-    //     ->orderby('usr_first_name')
+    //     ->orderby('last_name')
+    //     ->orderby('first_name')
     //     ->get();
 
     //     return view('admin.users.current', compact('users','mode'));
     // }
 
-    // public function activate($usr_uuid)
+    // public function activate($uuid)
     // {
     //     DB::table('users')
-    //     ->where('usr_uuid','=',$usr_uuid)
+    //     ->where('uuid','=',$uuid)
     //     ->update([
-    //         'usr_active' => '1'
+    //         'active' => '1'
     //     ]);
 
     //     alert()->success('Success','User has been activated.');
     //     return redirect()->back();
     // }
 
-    // public function deactivate($usr_uuid)
+    // public function deactivate($uuid)
     // {
     //     DB::table('users')
-    //     ->where('usr_uuid','=',$usr_uuid)
+    //     ->where('uuid','=',$uuid)
     //     ->update([
-    //         'usr_active' => '0'
+    //         'active' => '0'
     //     ]);
 
     //     alert()->success('Success','User has been deactivated.');
     //     return redirect()->back();
     // }
 
-    // public function addAdmin($usr_uuid)
+    // public function addAdmin($uuid)
     // {
     //     DB::table('users')
-    //     ->where('usr_uuid','=',$usr_uuid)
+    //     ->where('uuid','=',$uuid)
     //     ->update([
-    //         'usr_is_admin' => '1'
+    //         'is_admin' => '1'
     //     ]);
 
     //     alert()->success('Success','User has been set as admin.');
     //     return redirect()->back();
     // }
 
-    // public function removeAdmin($usr_uuid)
+    // public function removeAdmin($uuid)
     // {
     //     DB::table('users')
-    //     ->where('usr_uuid','=',$usr_uuid)
+    //     ->where('uuid','=',$uuid)
     //     ->update([
-    //         'usr_is_admin' => '0'
+    //         'is_admin' => '0'
     //     ]);
 
     //     alert()->success('Success','User has been set as regular user.');
     //     return redirect()->back();
     // }
 
-    
+
 }

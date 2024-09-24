@@ -19,7 +19,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12 col-lg-10">
                         <div class="wrap d-md-flex">
-                            <div class="img" style="background-image: url({{ asset('images/accounts/banner/sidebanner.png') }});">
+                            <div class="img" style="background-image: url({{ asset('images/accounts/banner/sidebanner.png') }});width: 600px; height: 530px;">
                             </div>
                             <div class="login-wrap p-4 p-md-4">
                                 <div class="d-flex justify-content-center">
@@ -32,29 +32,29 @@
                                 @if(session('errorMessage'))
                                     <p style="color:red;"><small>{{ session('errorMessage') }}</small></p>
                                 @endif
-                               
+
                                 <form method="POST" action="{{ action('App\Http\Controllers\UserController@register') }}">
                                 {{ csrf_field() }}
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="usr_first_name">First Name <span style="color:red;">*</span></label>
-                                            <input class="form-control" type="text" name="usr_first_name" required/>
+                                            <label for="first_name">First Name <span style="color:red;">*</span></label>
+                                            <input class="form-control" type="text" name="first_name" required/>
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="usr_middle_name">Middle Name</label>
-                                            <input class="form-control" type="text" name="usr_middle_name" />
+                                            <label for="middle_name">Middle Name</label>
+                                            <input class="form-control" type="text" name="middle_name" />
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="usr_last_name">Last Name <span style="color:red;">*</span></label>
-                                            <input class="form-control" type="text" name="usr_last_name" required/>
+                                            <label for="last_name">Last Name <span style="color:red;">*</span></label>
+                                            <input class="form-control" type="text" name="last_name" required/>
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="usr_mobile">Mobile No. (format: 09109005555)<span style="color:red;">*</span></label>
-                                            <input class="form-control" type="text" name="usr_mobile" required/>
+                                            <label for="username">Username<span style="color:red;">*</span></label>
+                                            <input class="form-control" type="text" name="username" required/>
                                         </div>
                                         <div class="col-md-12">
-                                            <label for="usr_email">E-Mail <span style="color:red;">*</span></label>
-                                            <input class="form-control" type="email" name="usr_email" required/>
+                                            <label for="password">Password<span style="color:red;">*</span></label>
+                                            <input class="form-control" type="password" name="password" required/>
                                         </div>
                                         <div class="col-md-12 col-sm-12 mb-2 mt-2">
                                             <button class="btn btn-secondary btn-block" style="background-color:#313131;color:white;" type="submit"><span class="fa fa-save"></span> Register</button>

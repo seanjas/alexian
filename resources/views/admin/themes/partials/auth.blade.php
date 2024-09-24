@@ -1,4 +1,4 @@
-@if(session('usr_id')==null)
+@if(session('id')==null)
     {{ unauthorize() }}
 @endif
 

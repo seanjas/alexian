@@ -16,12 +16,15 @@ class AdminController extends Controller
     public function setup()
     {
         // Assuming the logged-in user's ID is stored in the session or retrieved via Auth
-        $userId = session('usr_id');
+        $id = session('id');
 
         // Fetch the user's information
         $user = DB::table('users')
-            ->where('usr_id', $userId)
+            ->where('id', session('id'))
             ->first();
+
+
+            // dd($id, $user);
 
         // Pass the user data to the view
         return view('admin.setup.steps', compact('user'));

@@ -39,10 +39,10 @@
                             <div id="step-1" class="form-step">
                                 <h4>Step 1: Personal Information</h4>
                                 <div class="form-group">
-                                    <label for="usr_full_name">Full Name: </label>
-                                    <input class="form-control" type="text" name="usr_full_name" id="usr_full_name"
+                                    <label for="full_name">Full Name: </label>
+                                    <input class="form-control" type="text" name="full_name" id="full_name"
                                         placeholder="Full Name"
-                                        value="{{ $user->usr_first_name }} {{ $user->usr_middle_name }} {{ $user->usr_last_name }}"
+                                        value="{{ $user->first_name }} {{ $user->middle_name }} {{ $user->last_name }}"
                                         readonly />
                                 </div>
                                 <div class="form-group">
@@ -61,17 +61,17 @@
                                 <div class="form-group">
                                     <label for="usr_birth_date">Birth Date: </label>
                                     <input class="form-control" type="date" name="usr_birth_date" id="usr_birth_date"
-                                        value="{{ $user->usr_birth_date }}" />
+                                        value="" />
                                 </div>
                                 <div class="form-group">
                                     <label for="usr_mobile">Contact Number: </label>
                                     <input class="form-control" type="text" name="usr_mobile" id="usr_mobile"
-                                        placeholder="Contact Number" value="{{ $user->usr_mobile }}" />
+                                        placeholder="Contact Number" value="" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="usr_email">Email: </label>
-                                    <input class="form-control" type="text" name="usr_email" id="usr_email"
-                                        placeholder="Email" value="{{ $user->usr_email }}" readonly />
+                                    <label for="username">Email: </label>
+                                    <input class="form-control" type="text" name="username" id="username"
+                                        placeholder="Email" value="{{ $user->username }}" readonly />
                                 </div>
                             </div>
 
